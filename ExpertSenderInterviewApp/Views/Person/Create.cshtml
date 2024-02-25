@@ -1,5 +1,10 @@
 ﻿@model Domain.ViewModels.Person.CreatePersonViewModel
+
 <div class="row">
+	<span class="text-danger">@ViewBag.ErrorMessage</span>
+</div>
+
+<div class="row">	
 	<h2>Persons</h2>
 </div>
 <form method="post">

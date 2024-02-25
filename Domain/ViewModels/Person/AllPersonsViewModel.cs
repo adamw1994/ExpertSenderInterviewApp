@@ -11,6 +11,10 @@ namespace Domain.ViewModels.Person
     {
         public IEnumerable<PersonDto> Persons { get; set; }
 
+        public AllPersonsViewModel()
+        {
+            Persons = Enumerable.Empty<PersonDto>();
+        }
         public AllPersonsViewModel(IEnumerable<PersonDto> persons)
         {
             Persons = persons;

@@ -3,7 +3,9 @@
     ViewData["Title"] = "Home Page";
 
 }
-
+<div class="row">
+    <span class="text-danger">@ViewBag.ErrorMessage</span>
+</div>
 
 <div class="row">
     <div class="col-10">
@@ -12,62 +14,36 @@
     <div class="col-2">
         <a class="btn btn-info" asp-action="Create" asp-controller="Person">Add New Person</a>
     </div>
-    <div>
-        <table class="table table-striped border">
-            <tr class="table-info">
-                <th>
-                    @Html.DisplayName("FirstName")
-                </th>
-                <th>
-                    @Html.DisplayName("LastName")
-                </th>
-                <th>
-                    @Html.DisplayName("First email")
-                </th>
-                <th>
-                    @Html.DisplayName("Description")
-                </th>
-                <th></th>
-                <th></th>
-            </tr>
-            @foreach (var person in Model.Persons)
-            {
-                <tr>
-                    <td>@Html.DisplayFor(m => person.FirstName)</td>
-                    <td>@Html.DisplayFor(m => person.LastName)</td>
-                    <td>@Html.DisplayFor(m => person.FirstEmail)</td>
-                    <td>@Html.DisplayFor(m => person.Description)</td>
-                    <td><a type="submit" class="btn btn-danger" asp-action="Delete" asp-controller="Person" asp-route-id="@person.Id">Delete</a></td>
-                    <td><a type="submit" class="btn btn-info" asp-action="Edit" asp-controller="Person" asp-route-id="@person.Id">Edit</a></td>
+        <div>
+            <table class="table table-striped border">
+                <tr class="table-info">
+                    <th>
+                        @Html.DisplayName("FirstName")
+                    </th>
+                    <th>
+                        @Html.DisplayName("LastName")
+                    </th>
+                    <th>
+                        @Html.DisplayName("First email")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Description")
+                    </th>
+                    <th></th>
+                    <th></th>
                 </tr>
-            }
-        </table>
-    </div>
+                @foreach (var person in Model.Persons)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(m => person.FirstName)</td>
+                        <td>@Html.DisplayFor(m => person.LastName)</td>
+                        <td>@Html.DisplayFor(m => person.FirstEmail)</td>
+                        <td>@Html.DisplayFor(m => person.Description)</td>
+                        <td><a type="submit" class="btn btn-danger" asp-action="Delete" asp-controller="Person" asp-route-id="@person.Id">Delete</a></td>
+                        <td><a type="submit" class="btn btn-info" asp-action="Edit" asp-controller="Person" asp-route-id="@person.Id">Edit</a></td>
+                    </tr>
+                }
+            </table>
+        </div>
 </div>
 
-@* <div class="row">
-
-    <h1 class="display-4">Persons</h1>
-
-    <table class="center">
-        <thead>
-            <tr>
-                <th>Imię</th>
-                <th>Nazwisko</th>
-                <th>Pierwszy email</th>
-                <th>Opis</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach(var person in Model.Persons)
-            {
-                <tr>
-                    <td>@person.FirstName</td>
-                    <td>@person.LastName</td>
-                    <td>@person.FirstEmail</td>
-                    <td>@person.Description</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div> *@

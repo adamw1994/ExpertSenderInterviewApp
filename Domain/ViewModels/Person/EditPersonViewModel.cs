@@ -23,7 +23,9 @@ namespace Domain.ViewModels.Person
 		[Required]
 		[MaxLength(50)]
 		public string Email { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
+
+
 
 		public EditPersonViewModel() { }
 		public EditPersonViewModel(PersonDto dto)
@@ -43,7 +45,7 @@ namespace Domain.ViewModels.Person
 				FirstName = this.FirstName,
 				LastName = this.LastName,
 				FirstEmail = this.Email,
-				Description = this.Description
+				Description = this.Description ?? string.Empty
 			};
 		}
 

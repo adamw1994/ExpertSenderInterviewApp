@@ -8,7 +8,9 @@ namespace ExpertSenderInterviewApp.Controllers
 {
 	public class PersonController : Controller
 	{
-		private readonly ILogger<PersonController> _logger;
+		private readonly string ErrorMessageToUser = "B³¹d serwera. Spróbuj ponownie póŸniej";
+
+		private readonly ILogger<PersonController> logger;
 		private readonly IGetPersonService getPersonService;
 		private readonly IDeletePersonService deletePersonService;
 		private readonly ICreatePersonService createPersonService;
@@ -21,7 +23,7 @@ namespace ExpertSenderInterviewApp.Controllers
 			ICreatePersonService createPersonService,
 			IEditPersonService editPersonService)
 		{
-			_logger = logger;
+			this.logger = logger;
 			this.getPersonService = getPersonService;
 			this.deletePersonService = deletePersonService;
 			this.createPersonService = createPersonService;
@@ -30,8 +32,18 @@ namespace ExpertSenderInterviewApp.Controllers
 
 		public IActionResult List()
 		{
-			var persons = getPersonService.GetAllPersons();
-			return View(new AllPersonsViewModel(persons));
+			try
+			{
+                var persons = getPersonService.GetAllPersons();
+                return View(new AllPersonsViewModel(persons));
+            }
+			catch (Exception ex)
+			{
+				logger.LogError(ex.Message);
+                ViewBag.ErrorMessage = ErrorMessageToUser;
+				return View(new AllPersonsViewModel());
+            }
+			
 		}
 
 		public async Task<IActionResult> Create()
@@ -45,22 +57,49 @@ namespace ExpertSenderInterviewApp.Controllers
 			if (!ModelState.IsValid)
 				return View(viewModel);
 
-			await createPersonService.CreatePerson(viewModel.ConvertToDto());
+			try 
+			{
+				await createPersonService.CreatePerson(viewModel.ConvertToDto());
+			}	
+			catch (Exception ex)
+			{
+                logger.LogError(ex.Message);
+                ViewBag.ErrorMessage = ErrorMessageToUser;
+                return View();
+			}
+
 			return RedirectToAction(nameof(List));
 		}
 
 		public async Task<IActionResult> Delete(int id)
 		{
-			await deletePersonService.DeletePerson(id);
-			return RedirectToAction(nameof(List));
+			try
+			{
+                await deletePersonService.DeletePerson(id);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                ViewBag.ErrorMessage = ErrorMessageToUser;
+            }
+
+            return RedirectToAction(nameof(List));
 		}
 
 		public async Task<IActionResult> Edit(int id)
 		{
-			var person = await getPersonService.GetPerson(id);
-
-			if (person is not null)
-				return View(new EditPersonViewModel(person));
+			try
+			{
+                var person = await getPersonService.GetPerson(id);
+                if (person is not null)
+                    return View(new EditPersonViewModel(person));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                ViewBag.ErrorMessage = ErrorMessageToUser;
+            }
+            
 			return RedirectToAction(nameof(List));
 		}
 
@@ -70,8 +109,18 @@ namespace ExpertSenderInterviewApp.Controllers
 			if (!ModelState.IsValid)
 				return View(viewModel);
 
-			await editPersonService.EditPerson(viewModel.ConvertToDto());
-			return RedirectToAction(nameof(List));
-		}
+			try
+			{
+                await editPersonService.EditPerson(viewModel.ConvertToDto());
+                return RedirectToAction(nameof(List));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                ViewBag.ErrorMessage = ErrorMessageToUser;
+                return View(viewModel);
+            }
+
+        }
 	}
 }

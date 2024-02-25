@@ -59,7 +59,7 @@ namespace Infrastructure.Data
                     .RuleFor(p => p.Description, f => f.Music.Genre())
                     .RuleFor(p => p.Emails,f => emailsGenerator.Generate(RandomNumberGenerator.GetInt32(5)).ToList());
 
-                var persons = personsGenerator.Generate(10);
+                var persons = personsGenerator.Generate(100);
 
                 await context.AddRangeAsync(persons);
                 await context.SaveChangesAsync();
